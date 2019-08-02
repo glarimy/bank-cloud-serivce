@@ -1,0 +1,21 @@
+version: "3"
+services:
+  bank:
+    image: glarimy/bank:latest
+    ports:
+      - "8080:8080"
+    networks:
+      - glarimy
+    depends_on:
+      - mysqldb
+ 
+  mysqldb:
+    image: mysql:latest
+    networks:
+      - glarimy
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_DATABASE=glarimy
+
+networks:
+  glarimy: 

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bank
+  labels:
+    name: bank-pod
+spec:
+  containers:
+    -
+      name: bank
+      image: glarimy/bank
+      ports:
+        -
+          containerPort: 8080
