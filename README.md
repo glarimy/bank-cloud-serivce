@@ -76,12 +76,11 @@ Verify the nodes, pods and services
 
 ```
 kubectl get nodes
+kubectl get deployments
 kubectl get pods
 kubectl get services
-```
 
-kubectl describe pods
-kubectl describe services
+```
 
 Launch pod with MySQL
 
@@ -101,10 +100,11 @@ kubectl get services
 kubectl describe services
 ```
 
-Launch pod with bank
+Launch pod replicas with bank deployment
 
 ```
-kubectl create -f bank-pod.yml
+kubectl apply -f bank-deployment.yml
+kubectl get deployments
 kubectl get pods
 kubectl describe pods
 kubectl logs bank
@@ -113,9 +113,11 @@ kubectl logs bank
 Expose bank as a service
 
 ```
-kubectl expose pod bank --port=8080 --name=bank --type=NodePort
+kubectl expose deployment/bank --port=8080 --name=bank --type=NodePort
 kubectl get services
 kubectl describe services
+kubectl scale deployments/bank --replicas=5
+kubectl get services
 ```
 
 Access REST services locally
@@ -123,13 +125,13 @@ Access REST services locally
 ```
 minikube ip
 kubectl get services
-curl -X POST -H 'Content-Type: application/json' -i '<minikube ip>:<nodePort>/account/ --data '{"name":"Krishna", "phone":"9731423166"}'
+curl -X POST -H 'Content-Type: application/json' -i <minikube ip>:<nodePort>/account/ --data '{"name":"Krishna", "phone":"9731423166"}'
 curl '<minikube ip>:<nodePort>/account/1'
-curl -X POST -H 'Content-Type: application/json' -i '<minikube ip>:<nodePort>/account/1/transaction' --data '{"amount":100, "type":"CR"}'
+curl -X POST -H 'Content-Type: application/json' -i <minikube ip>:<nodePort>/account/1/transaction' --data '{"amount":100, "type":"CR"}'
 curl '<minikube ip>:<nodePort>/account/1'
 ```
 
-Access REST services externally
+Access REST externally
 
 ```
 http://<dns>/account/1'
