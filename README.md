@@ -1,4 +1,4 @@
-# Cloud Services
+# Spring Boot Micro Services
 Spring Boot with Cloud, Dockers and Kubernetes
 
 Login to ``https://labs.play-with-docker.com/`` with your docker-hub id.
@@ -8,7 +8,7 @@ Start a Linux instance
 Clone the code repo on to the instance
 
 ```
-git clone https://github.com/glarimy/bank-services.git
+git clone https://github.com/glarimy/bank-cloud-serivce.git
 ```
 
 Build the docker image
@@ -50,8 +50,10 @@ docker container exec -it mysqldb bash
 Verify the apps
 
 ```
-curl -X POST -H 'Content-Type: application/json' -i '/account/' --data '{"name":"Krishna", "phone":"9731423166"}'
-curl '/account/1'
+curl -X POST -H 'Content-Type: application/json' -i 'http://localhost:8080/account/' --data '{"name":"Krishna", "phone":"9731423166"}'
+curl 'http://localhost:8080/account/1'
+curl -X POST -H 'Content-Type: application/json' -i 'http://localhost:8080/account/1/transaction' --data '{"amount":100, "type":"CR"}'
+curl 'http://localhost:8080/account/1'
 ```
 
 Run the docker compose
@@ -121,12 +123,14 @@ Access REST services locally
 ```
 minikube ip
 kubectl get services
-curl -X POST -H 'Content-Type: application/json' -i '<minikube ip>:<nodePort>/account/' --data '{"name":"Krishna", "phone":"9731423166"}'
+curl -X POST -H 'Content-Type: application/json' -i '<minikube ip>:<nodePort>/account/ --data '{"name":"Krishna", "phone":"9731423166"}'
+curl '<minikube ip>:<nodePort>/account/1'
+curl -X POST -H 'Content-Type: application/json' -i '<minikube ip>:<nodePort>/account/1/transaction' --data '{"amount":100, "type":"CR"}'
 curl '<minikube ip>:<nodePort>/account/1'
 ```
 
 Access REST services externally
 
 ```
-http://<dns>/bank/book/123
+http://<dns>/account/1'
 ```
